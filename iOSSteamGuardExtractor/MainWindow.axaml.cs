@@ -244,7 +244,7 @@ namespace iOSSteamGuardExtractor
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                iosBackups = string.Join(Path.DirectorySeparatorChar, new[] { "Users", Environment.UserName, "Library", "Application Support", "MobileSync", "Backup" });
+                iosBackups = string.Join(Path.DirectorySeparatorChar, new[] { "", "Users", Environment.UserName, "Library", "Application Support", "MobileSync", "Backup" });
             }
             else
             {
