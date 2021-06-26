@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ios-steamguard-extractor", "ios-steamguard-extractor\ios-steamguard-extractor.csproj", "{9913ED22-8249-4397-B920-C9BD25778EC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOSSteamGuardExtractor", "iOSSteamGuardExtractor\iOSSteamGuardExtractor.csproj", "{B4041A3C-32EB-4BA1-BC83-203F998F4128}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{9913ED22-8249-4397-B920-C9BD25778EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9913ED22-8249-4397-B920-C9BD25778EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9913ED22-8249-4397-B920-C9BD25778EC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4041A3C-32EB-4BA1-BC83-203F998F4128}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4041A3C-32EB-4BA1-BC83-203F998F4128}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4041A3C-32EB-4BA1-BC83-203F998F4128}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4041A3C-32EB-4BA1-BC83-203F998F4128}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {342A70A7-36CB-4FAF-9D6D-15FE5E8FC7BA}
 	EndGlobalSection
 EndGlobal
