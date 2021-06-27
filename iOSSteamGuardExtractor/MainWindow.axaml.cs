@@ -195,7 +195,7 @@ namespace iOSSteamGuardExtractor
             {
                 var guid = ProcessInfoPlist(d);
                 if (guid == null) return;
-                var dbConnection = new SqliteConnection($"Data Source=\"{Path.Combine(d, "Manifest.db")}\";Version=3;");
+                var dbConnection = new SqliteConnection($"Data Source=\"{Path.Combine(d, "Manifest.db")}\";");
                 dbConnection.Open();
                 var query =
                     "Select * from Files where domain is 'AppDomain-com.valvesoftware.Steam' and relativePath like 'Documents/Steamguard-%'";
