@@ -151,7 +151,7 @@ namespace iOSSteamGuardExtractor
             }
             finally
             {
-                txtResults.Text = b.ToString();
+                txtResults.Text += b.ToString();
             }
             return true;
         }
