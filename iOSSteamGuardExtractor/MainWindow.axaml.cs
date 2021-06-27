@@ -136,8 +136,8 @@ namespace iOSSteamGuardExtractor
                 b.AppendLine(JsonConvert.SerializeObject(auth, Formatting.Indented));
                 b.AppendLine();
 
-                b.AppendLine(JsonConvert.SerializeObject(auth, Formatting.Indented));
                 b.AppendLine("Alternatively, you can paste the above json text into {botname}.maFile in your ASF config directory, if you use ASF");
+                b.AppendLine();
             }
             catch (PropertyListFormatException) //The only way this should happen is if we opened an encrypted backup.
             {
@@ -151,7 +151,7 @@ namespace iOSSteamGuardExtractor
             }
             finally
             {
-                txtResults.Text += b.ToString();
+                txtResults.Text = b.ToString();
             }
             return true;
         }
@@ -285,7 +285,7 @@ namespace iOSSteamGuardExtractor
             {
                 if (!Directory.Exists(iosBackups))
                 {
-                    txtResults.Text += $"{Environment.NewLine}Warn: Backup path not found, path: {iosBackups}{Environment.NewLine}";
+                    //txtResults.Text += $"{Environment.NewLine}Warn: Backup path not found, path: {iosBackups}{Environment.NewLine}";
                 }
                 else
                 {

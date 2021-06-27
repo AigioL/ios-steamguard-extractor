@@ -6,7 +6,7 @@
         Width="700" Height="500"
         WindowStartupLocation="CenterScreen"
         x:Class="iOSSteamGuardExtractor.MainWindow"
-        Title="iOS SteamGuard Extractor">
+        Title="iOS Backup SteamGuard Authenticator Data Extractor">
   <DockPanel>
     <Button Name="btnGetSteamGuardData" 
             DockPanel.Dock="Bottom"
