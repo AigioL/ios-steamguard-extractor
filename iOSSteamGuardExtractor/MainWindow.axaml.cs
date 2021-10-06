@@ -19,7 +19,7 @@ namespace iOSSteamGuardExtractor
     public partial class MainWindow : Window
     {
         readonly Button btnGetSteamGuardData;
-        readonly TextBox txtResults;
+        readonly (TextBox textBox, StringBuilder builder) txtResults;
 
         public MainWindow()
         {
@@ -28,8 +28,9 @@ namespace iOSSteamGuardExtractor
             this.AttachDevTools();
 #endif
             btnGetSteamGuardData = this.FindControl<Button>(nameof(btnGetSteamGuardData));
-            txtResults = this.FindControl<TextBox>(nameof(txtResults));
-            btnGetSteamGuardData.Click += btnGetSteamGuardData_Click;
+            var txtResultsControls = this.FindControl<TextBox>(nameof(txtResults));
+            txtResults = (txtResultsControls, new(txtResultsControls.Text));
+            btnGetSteamGuardData.Click += BtnGetSteamGuardData_Click;
         }
 
         private void InitializeComponent()
@@ -55,7 +56,7 @@ namespace iOSSteamGuardExtractor
 
         private bool ProcessSteamGuardFile(string filename, string filepath, string deviceID)
         {
-            StringBuilder b = new(txtResults.Text);
+            StringBuilder b = txtResults.builder;
             b.AppendFormat("Processing {0}", filename);
             b.AppendLine();
             try
@@ -149,10 +150,6 @@ namespace iOSSteamGuardExtractor
                 b.AppendFormat("An Exception occurred while processing: {0}", ex.Message);
                 return false;
             }
-            finally
-            {
-                txtResults.Text = b.ToString();
-            }
             return true;
         }
 
@@ -172,18 +169,15 @@ namespace iOSSteamGuardExtractor
                 Array.Copy(data, index2 + 2, temp, 0, filelen);
                 var steamfilename = Encoding.UTF8.GetString(temp);
                 if (!steamfilename.StartsWith("Documents/Steamguard-")) continue;
-                var hash =
-                    new SHA1Managed().ComputeHash(
-                        Encoding.UTF8.GetBytes("AppDomain-com.valvesoftware.Steam-" + steamfilename));
+                var hash = SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes("AppDomain-com.valvesoftware.Steam-" + steamfilename));
                 var hashstr = BitConverter.ToString(hash).Replace("-", "");
                 if (File.Exists(Path.Combine(d, hashstr)))
                 {
-                    if (!ProcessSteamGuardFile(steamfilename, Path.Combine(d, hashstr), guid))
-                        break;
+                    if (!ProcessSteamGuardFile(steamfilename, Path.Combine(d, hashstr), guid)) break;
                 }
                 else
                 {
-                    txtResults.Text += $"Error: {steamfilename} is missing from ios backup, aborting{Environment.NewLine}";
+                    txtResults.builder.AppendLine($"Error: {steamfilename} is missing from ios backup, aborting");
                     break;
                 }
             }
@@ -197,8 +191,7 @@ namespace iOSSteamGuardExtractor
                 if (guid == null) return;
                 var dbConnection = new SqliteConnection($"Data Source=\"{Path.Combine(d, "Manifest.db")}\";");
                 dbConnection.Open();
-                var query =
-                    "Select * from Files where domain is 'AppDomain-com.valvesoftware.Steam' and relativePath like 'Documents/Steamguard-%'";
+                var query = "Select * from Files where domain is 'AppDomain-com.valvesoftware.Steam' and relativePath like 'Documents/Steamguard-%'";
                 var dbCommand = new SqliteCommand(query, dbConnection);
                 var dbReader = dbCommand.ExecuteReader();
                 while (dbReader.Read())
@@ -212,11 +205,11 @@ namespace iOSSteamGuardExtractor
             }
             catch (SqliteException)
             {
-                txtResults.Text += $"Error: Encrypted backups are not supported. You need to create a decrypted backup to proceed.{Environment.NewLine}";
+                txtResults.builder.AppendLine("Error: Encrypted backups are not supported. You need to create a decrypted backup to proceed.");
             }
             catch (Exception ex)
             {
-                txtResults.Text += $"An Exception occurred while processing: {ex.Message}";
+                txtResults.builder.AppendLine($"An Exception occurred while processing: {ex.Message}");
             }
         }
 
@@ -225,17 +218,17 @@ namespace iOSSteamGuardExtractor
             try
             {
                 var info = (NSDictionary)PropertyListParser.Parse(Path.Combine(d, "Info.plist"));
-                txtResults.Text += $"Processing backup: {info["Device Name"]} version {info["Product Version"]}{Environment.NewLine}";
+                txtResults.builder.AppendLine($"Processing backup: {info["Device Name"]} version {info["Product Version"]}");
                 return info["Unique Identifier"].ToString();
             }
             catch (Exception ex)
             {
-                txtResults.Text += $"An Exception occurred while processing: {ex.Message}";
+                txtResults.builder.AppendLine($"An Exception occurred while processing: {ex.Message}");
                 return null;
             }
         }
 
-        private async void btnGetSteamGuardData_Click(object sender, RoutedEventArgs e)
+        private async void BtnGetSteamGuardData_Click(object sender, RoutedEventArgs e)
         {
             string iosBackups;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -251,46 +244,10 @@ namespace iOSSteamGuardExtractor
                 iosBackups = null;
             }
 
-            //var fileDialog = new OpenFileDialog
-            //{
-            //    AllowMultiple = false,
-            //    Title = "Please select Manifest file",
-            //    Filters = new()
-            //    {
-            //        new() { Name = "Manifest.mbdb", Extensions = new() { "mbdb" }, },
-            //        new() { Name = "Manifest.db", Extensions = new() { "db" }, },
-            //    },
-            //};
-
-            //if (iosBackups != null)
-            //{
-            //    if (!Directory.Exists(iosBackups))
-            //    {
-            //        txtResults.Text += $"Warn: Backup path not found, path: {iosBackups}";
-            //    }
-            //    else
-            //    {
-            //        fileDialog.Directory = iosBackups;
-            //    }
-            //}
-
-            //var selectFilePath = (await fileDialog.ShowAsync(this)).FirstOrDefault();
-            //if (File.Exists(selectFilePath))
-            //{
-
-            //}
-
             var folderDialog = new OpenFolderDialog();
-            if (iosBackups != null)
+            if (iosBackups != null && Directory.Exists(iosBackups))
             {
-                if (!Directory.Exists(iosBackups))
-                {
-                    //txtResults.Text += $"{Environment.NewLine}Warn: Backup path not found, path: {iosBackups}{Environment.NewLine}";
-                }
-                else
-                {
-                    folderDialog.Directory = iosBackups;
-                }
+                folderDialog.Directory = iosBackups;
             }
 
             var selectDirPath = await folderDialog.ShowAsync(this);
@@ -300,48 +257,62 @@ namespace iOSSteamGuardExtractor
             }
             if (!Directory.Exists(selectDirPath))
             {
-                txtResults.Text += $"{Environment.NewLine}No ios backups found{Environment.NewLine}";
+                txtResults.builder.AppendLine("No ios backups found");
                 return;
             }
 
-            foreach (var d in Directory.GetDirectories(selectDirPath))
+            var dirs = Directory.GetDirectories(selectDirPath);
+            if (dirs.Any())
             {
-                var name = new DirectoryInfo(d).Name;
-                if (File.Exists(Path.Combine(d, "Manifest.mbdb")))
-                    ProcessIOS9Backup(d);
-                else if (File.Exists(Path.Combine(d, "Manifest.db")))
-                    ProcessIOS10Backup(d);
-                else
+                foreach (var d in dirs)
                 {
-                    txtResults.Text += $"Directory {name} is not in a recognized backup format.{Environment.NewLine}Listing contents of this directory.  Please open an issue and paste this listing as well as the Version of ios and itunes you are using.{Environment.NewLine}{Environment.NewLine}";
-                    var count = 0;
-                    foreach (var f in Directory.GetFiles(d))
+                    var name = new DirectoryInfo(d).Name;
+                    if (File.Exists(Path.Combine(d, "Manifest.mbdb")))
+                        ProcessIOS9Backup(d);
+                    else if (File.Exists(Path.Combine(d, "Manifest.db")))
+                        ProcessIOS10Backup(d);
+                    else
                     {
-                        var fileName = Path.GetFileName(f);
-                        if (fileName == null) continue;
-
-                        var filename = fileName.ToLower();
-
-                        if (filename.Length == 40)
+                        txtResults.builder.AppendLine($"Directory {name} is not in a recognized backup format.{Environment.NewLine}Listing contents of this directory.  Please open an issue and paste this listing as well as the Version of ios and itunes you are using.");
+                        txtResults.builder.AppendLine();
+                        var count = 0;
+                        foreach (var f in Directory.GetFiles(d))
                         {
-                            var chars = new[]
-                            {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
-                            filename = chars.Aggregate(filename, (current, c) => current.Replace(c, ""));
-                            if (filename.Length == 0)
-                            {
-                                count++;
-                                continue;
-                            }
-                        }
-                        filename = fileName;
-                        txtResults.Text += $"{filename}{Environment.NewLine}";
-                    }
-                    txtResults.Text += $"{Environment.NewLine}Done listing files - Skipped {count} files{Environment.NewLine}{Environment.NewLine}";
-                    continue;
-                }
+                            var fileName = Path.GetFileName(f);
+                            if (fileName == null) continue;
 
-                txtResults.Text += $"Done{Environment.NewLine}{Environment.NewLine}";
+                            var filename = fileName.ToLower();
+
+                            if (filename.Length == 40)
+                            {
+                                var chars = new[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
+                                filename = chars.Aggregate(filename, (current, c) => current.Replace(c, ""));
+                                if (filename.Length == 0)
+                                {
+                                    count++;
+                                    continue;
+                                }
+                            }
+                            filename = fileName;
+                            txtResults.builder.AppendLine(filename);
+                        }
+                        txtResults.builder.AppendLine();
+                        txtResults.builder.AppendLine($"Done listing files - Skipped {count} files");
+                        txtResults.builder.AppendLine();
+                        continue;
+                    }
+                    txtResults.builder.AppendLine("Done");
+                    txtResults.builder.AppendLine();
+                    txtResults.builder.AppendLine();
+                }
             }
+            else
+            {
+                txtResults.builder.AppendLine("No ios backups found");
+            }
+
+            txtResults.Flush();
+            txtResults.textBox.ScrollToEnd();
         }
     }
 }

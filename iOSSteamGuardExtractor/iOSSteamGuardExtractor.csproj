@@ -2,20 +2,33 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ApplicationIcon>Assets\ApplicationIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <AllowedReferenceRelatedFileExtensions>
+      <!-- Prevent default XML and PDB files copied to output in RELEASE. 
+           Only *.allowedextension files will be included, which doesn't exist in my case.
+       -->
+      .allowedextension
+    </AllowedReferenceRelatedFileExtensions>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\ios-steamguard-extractor\SteamAuthenticator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.6" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.6" />
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.0-preview.5.21301.9" />
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.7" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.0-rc.1.21452.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="plist-cil" Version="2.2.0" />
-    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.0.5-pre20210521085756" />
-    <PackageReference Include="SQLitePCLRaw.core" Version="2.0.5-pre20210521085756" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.0.7-pre20210929171745" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="2.0.7-pre20210929171745" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.6" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
   </ItemGroup>
 </Project>
