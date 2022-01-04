@@ -1,3 +1,4 @@
+#if !NETSTANDARD
 using Avalonia;
 
 namespace iOSSteamGuardExtractor
@@ -15,8 +16,9 @@ namespace iOSSteamGuardExtractor
 
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
+            => AppBuilder.Configure<App2>()
                 .UsePlatformDetect()
                 .LogToTrace();
     }
 }
+#endif

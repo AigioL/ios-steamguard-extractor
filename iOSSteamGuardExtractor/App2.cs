@@ -1,21 +1,14 @@
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls.ApplicationLifetimes;
 
 namespace iOSSteamGuardExtractor
 {
-    public class App : Application
+    sealed class App2 : App
     {
-        public override void Initialize()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
         public override void OnFrameworkInitializationCompleted()
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow();
+                desktop.MainWindow = new MainWindow2();
             }
 
             base.OnFrameworkInitializationCompleted();

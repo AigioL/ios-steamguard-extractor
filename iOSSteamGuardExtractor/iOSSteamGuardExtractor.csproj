@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net48</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <ApplicationIcon>Assets\ApplicationIcon.ico</ApplicationIcon>
+    <ApplicationIcon>..\iOSSteamGuardExtractor.UI\Assets\ApplicationIcon.ico</ApplicationIcon>
+    <LangVersion>10.0</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <AllowedReferenceRelatedFileExtensions>
@@ -20,15 +22,13 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.7" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.0-rc.1.21452.10" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="plist-cil" Version="2.2.0" />
-    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.0.7-pre20210929171745" />
-    <PackageReference Include="SQLitePCLRaw.core" Version="2.0.7-pre20210929171745" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.0.7" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="2.0.7" />
   </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
+  <ItemGroup>
+    <ProjectReference Include="..\iOSSteamGuardExtractor.UI\iOSSteamGuardExtractor.UI.csproj" />
   </ItemGroup>
 </Project>

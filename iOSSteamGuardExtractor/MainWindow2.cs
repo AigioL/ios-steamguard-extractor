@@ -1,7 +1,5 @@
-using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Claunia.PropertyList;
 using ios_steamguard_extractor;
 using Microsoft.Data.Sqlite;
@@ -16,26 +14,17 @@ using System.Text;
 
 namespace iOSSteamGuardExtractor
 {
-    public partial class MainWindow : Window
+    sealed class MainWindow2 : MainWindow
     {
         readonly Button btnGetSteamGuardData;
         readonly (TextBox textBox, StringBuilder builder) txtResults;
 
-        public MainWindow()
+        public MainWindow2()
         {
-            InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
             btnGetSteamGuardData = this.FindControl<Button>(nameof(btnGetSteamGuardData));
             var txtResultsControls = this.FindControl<TextBox>(nameof(txtResults));
             txtResults = (txtResultsControls, new(txtResultsControls.Text));
             btnGetSteamGuardData.Click += BtnGetSteamGuardData_Click;
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         private static int SearchBytes(IReadOnlyList<byte> haystack, IReadOnlyList<byte> needle, int start)
@@ -234,10 +223,18 @@ namespace iOSSteamGuardExtractor
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 iosBackups = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Apple Computer", "MobileSync", "Backup");
+                if (!Directory.Exists(iosBackups))
+                {
+                    iosBackups = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Apple", "MobileSync", "Backup");
+                }
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                iosBackups = string.Join(Path.DirectorySeparatorChar, new[] { "", "Users", Environment.UserName, "Library", "Application Support", "MobileSync", "Backup" });
+                iosBackups = string.Join(Path.DirectorySeparatorChar
+#if NETFRAMEWORK || NETSTANDARD
+                    .ToString()
+#endif
+                    , new[] { "", "Users", Environment.UserName, "Library", "Application Support", "MobileSync", "Backup" });
             }
             else
             {
