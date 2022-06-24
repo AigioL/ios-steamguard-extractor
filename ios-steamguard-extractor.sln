@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ios-steamguard-extractor", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iOSSteamGuardExtractor", "iOSSteamGuardExtractor\iOSSteamGuardExtractor.csproj", "{B4041A3C-32EB-4BA1-BC83-203F998F4128}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOSSteamGuardExtractor.UI", "iOSSteamGuardExtractor.UI\iOSSteamGuardExtractor.UI.csproj", "{B19D0F08-EFD9-43E4-A0C8-CF25DEFF9A45}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Avalonia.Ref", "Avalonia.Ref", "{06ED8FB4-AA05-4BD3-A911-5B026D35A047}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.Themes.Fluent", "Avalonia.Ref\Avalonia.Themes.Fluent\Avalonia.Themes.Fluent.csproj", "{EE2F4EC7-69F3-4908-AB95-6B4B360D46FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,13 +25,16 @@ Global
 		{B4041A3C-32EB-4BA1-BC83-203F998F4128}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4041A3C-32EB-4BA1-BC83-203F998F4128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4041A3C-32EB-4BA1-BC83-203F998F4128}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B19D0F08-EFD9-43E4-A0C8-CF25DEFF9A45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B19D0F08-EFD9-43E4-A0C8-CF25DEFF9A45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B19D0F08-EFD9-43E4-A0C8-CF25DEFF9A45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B19D0F08-EFD9-43E4-A0C8-CF25DEFF9A45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE2F4EC7-69F3-4908-AB95-6B4B360D46FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE2F4EC7-69F3-4908-AB95-6B4B360D46FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE2F4EC7-69F3-4908-AB95-6B4B360D46FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE2F4EC7-69F3-4908-AB95-6B4B360D46FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EE2F4EC7-69F3-4908-AB95-6B4B360D46FD} = {06ED8FB4-AA05-4BD3-A911-5B026D35A047}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {342A70A7-36CB-4FAF-9D6D-15FE5E8FC7BA}

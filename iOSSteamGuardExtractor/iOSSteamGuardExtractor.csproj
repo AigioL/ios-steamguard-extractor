@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net6.0;net48</TargetFrameworks>
+    <TargetFrameworks>net6.0;net472</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <ApplicationIcon>..\iOSSteamGuardExtractor.UI\Assets\ApplicationIcon.ico</ApplicationIcon>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Prefer32Bit>false</Prefer32Bit>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <AllowedReferenceRelatedFileExtensions>
@@ -14,21 +14,48 @@
        -->
       .allowedextension
     </AllowedReferenceRelatedFileExtensions>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <AutoreleasePoolSupport>false</AutoreleasePoolSupport>
+    <DebuggerSupport>false</DebuggerSupport>
+    <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+    <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+    <EventSourceSupport>false</EventSourceSupport>
+    <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+    <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+    <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+    <CustomResourceTypesSupport>false</CustomResourceTypesSupport>
+    <EnableCppCLIHostActivation>false</EnableCppCLIHostActivation>
+    <EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>false</EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>
+    <StartupHookSupport>false</StartupHookSupport>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\ios-steamguard-extractor\SteamAuthenticator.cs" />
-  </ItemGroup>
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
+    <DefineConstants>NETFRAMEWORK;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.1" />
+    <PackageReference Include="Avalonia" Version="0.10.15" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.15" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="plist-cil" Version="2.2.0" />
-    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.0.7" />
-    <PackageReference Include="SQLitePCLRaw.core" Version="2.0.7" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.0" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="2.1.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.15" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\iOSSteamGuardExtractor.UI\iOSSteamGuardExtractor.UI.csproj" />
+    <Compile Include="..\ios-steamguard-extractor\SteamAuthenticator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Avalonia.Ref\Avalonia.Themes.Fluent\Avalonia.Themes.Fluent.csproj" />
   </ItemGroup>
 </Project>

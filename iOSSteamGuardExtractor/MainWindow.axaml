@@ -4,10 +4,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="540"
         Width="540" Height="540"
+		MinWidth="320" MinHeight="320"
         WindowStartupLocation="CenterScreen"
         x:Class="iOSSteamGuardExtractor.MainWindow"
-        Icon="/Assets/ApplicationIcon.ico"
+        Icon="/Assets/wfc.ico"
         Title="iOS Backup SteamGuard Authenticator Data Extractor">
+  <Window.Styles>
+    <Style Selector="Button:pressed">
+		<Setter Property="TextBlock.Foreground" Value="White" />
+    </Style>
+  </Window.Styles>
   <DockPanel>
     <Button Name="btnGetSteamGuardData"
             DockPanel.Dock="Bottom"
